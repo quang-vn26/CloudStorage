@@ -14,7 +14,7 @@ public class CredentialService {
         this.credentialMapper = credentialMapper;
     }
 
-    public List<Credential> getAllCredentials(Integer userId){
+    public List<Credential> getAllCredentialsByUserId(Integer userId){
         return credentialMapper.getListCredential(userId);
     }
 }

@@ -1,5 +1,8 @@
 package com.udacity.jwdnd.course1.cloudstorage.model;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class File{
     private Integer fileid;
     private String filename;
@@ -15,6 +18,10 @@ public class File{
         this.filesize = fileSize;
         this.userid = userid;
         this.filedata = fileData;
+    }
+
+    public File() {
+
     }
 
     public Integer getFileid() {

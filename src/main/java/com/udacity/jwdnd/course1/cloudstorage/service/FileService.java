@@ -17,7 +17,13 @@ public class FileService {
     }
 
     // Get all file
-    public List<File> getAllFile(Integer userId){
+    public List<File> getAllFileByUserId(Integer userId) {
         return fileMapper.getAllFileByUser(userId);
     }
+
+    public int insertFile(File file) {
+        return fileMapper.insertFile(file);
+    }
+
+
 }
