@@ -19,15 +19,14 @@ public class NoteController {
     UserService userService;
 
     @PostMapping()
-    public String addOrEditNote(Model model, Authentication authentication, @RequestParam("noteTitle") String noteTitle,
-                                @RequestParam("noteDescription") String noteDescription,
-                                @RequestParam(value = "noteId", required = false) Integer noteId) {
+    public String addOrEditNote(Model model, Authentication authentication, @ModelAttribute("noteForm") Note noteForm
+                               , @RequestParam(value = "noteId", required = false) Integer noteId) {
 
         User user = userService.getUser(authentication.getName());
         Integer userid = user.getUserId();
         Note note = new Note();
-        note.setNotetitle(noteTitle);
-        note.setNotedescription(noteDescription);
+        note.setNotetitle(noteForm.getNotetitle());
+        note.setNotedescription(noteForm.getNotedescription());
         note.setUserid(userid);
 
         try {

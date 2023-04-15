@@ -1,6 +1,11 @@
 package com.udacity.jwdnd.course1.cloudstorage.model;
 
+import com.udacity.jwdnd.course1.cloudstorage.service.EncryptionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.security.SecureRandom;
+import java.util.Base64;
 
 @Repository
 public class Credential{
@@ -11,9 +16,11 @@ public class Credential{
     private String password;
     private Integer userid;
 
+
     public Credential(){
 
     }
+
     public Credential(Integer credentialid, String url, String username, String key, String password, Integer userid) {
         this.credentialid = credentialid;
         this.url = url;
@@ -23,6 +30,13 @@ public class Credential{
         this.userid = userid;
     }
 
+    public String getDecryptedPassword(Credential credential){
+        SecureRandom random = new SecureRandom();
+        String encodedKey = credential.getKey();
+        EncryptionService encryptionService = new EncryptionService();
+        String decryptedPassword = encryptionService.decryptValue(credential.getPassword(), encodedKey);
+        return  decryptedPassword;
+    }
     public Integer getCredentialid() {
         return credentialid;
     }

@@ -12,9 +12,13 @@ public interface CredentialMapper {
     @Select("SELECT * FROM CREDENTIALS WHERE credentialid = #{credentialid}")
     Credential getCredentialById(Integer credentialid);
 
-    @Insert("INSERT INTO CREDENTIALS(url, username, key, password, userid) VALUES()")
+    @Insert("INSERT INTO CREDENTIALS(url, username, key, password, userid) VALUES(#{url},#{username},#{key},#{password},#{userid})")
     @Options(useGeneratedKeys = true, keyProperty = "credentialid")
     int insertCredential(Credential credential);
+
+    @Update("UPDATE CREDENTIALS SET url = #{url}, username = #{username}, password=#{password},key = #{key} " +
+            "WHERE userid=#{userid} and credentialid=#{credentialid}")
+    int updateCredential(Credential credential);
 
     @Delete("DELETE FROM CREDENTIALS WHERE credentialid= #{credentialid} ")
     int deleteCredential(Integer credentialid);

@@ -82,11 +82,11 @@
                         <tr th:each="note:${notes}">
                             <td>
                                 <button
-                                        th:data-parameter1="${note.noteid}"
-                                        th:data-parameter2="${note.notetitle}"
-                                        th:data-parameter3="${note.notedescription}"
-                                        th:onclick="showNoteModal(this.getAttribute('data-parameter1'),
-                                        this.getAttribute('data-parameter2'), this.getAttribute('data-parameter3'))"
+                                        th:data-noteid="${note.noteid}"
+                                        th:data-notetitle="${note.notetitle}"
+                                        th:data-notedescription="${note.notedescription}"
+                                        th:onclick="showNoteModal(this.getAttribute('data-noteid'),
+                                        this.getAttribute('data-notetitle'), this.getAttribute('data-notedescription'))"
                                         type="button" class="btn btn-success">Edit</button>
                                 <a th:href = "@{/note/delete/__${note.noteid}__}" class="btn btn-danger">Delete</a>
                             </td>
@@ -108,16 +108,16 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form  th:action="@{/note}"  action="#" method="POST">
+                                <form th:object="${noteForm}"  th:action="@{/note}"  action="#" method="POST">
                                     <input type="hidden" name="noteId" id="note-id">
                                     <div class="form-group">
                                         <label for="note-title" class="col-form-label">Title</label>
-                                        <input type="text" name="noteTitle" class="form-control" id="note-title"
+                                        <input th:field="*{notetitle}" type="text" name="noteTitle" class="form-control" id="note-title"
                                                maxlength="20" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="note-description" class="col-form-label">Description</label>
-                                        <textarea class="form-control" name="noteDescription" id="note-description"
+                                        <textarea th:field="*{notedescription}"  class="form-control" name="noteDescription" id="note-description"
                                                   rows="5" maxlength="1000" required></textarea>
                                     </div>
                                     <button id="noteSubmit" type="submit" class="d-none"></button>
@@ -152,8 +152,15 @@
                         <tbody>
                         <tr th:each = "credential:${credentials}">
                             <td>
-                                <button type="button" class="btn btn-success">Edit</button>
-                                <a class="btn btn-danger">Delete</a>
+                                <button type="button" class="btn btn-success"
+                                        th:data-credentialid="${credential.credentialid}"
+                                        th:data-url="${credential.url}"
+                                        th:data-username="${credential.username}"
+                                        th:data-getDecryptedPassword="${credential.getDecryptedPassword(credential)}"
+                                        th:onclick="showCredentialModal(this.getAttribute('data-credentialid'),
+                                        this.getAttribute('data-url'), this.getAttribute('data-username'), this.getAttribute('data-getDecryptedPassword'))"
+                                >Edit</button>
+                                <a th:href="@{/credential/delete/__${credential.credentialid}__}" class="btn btn-danger">Delete</a>
                             </td>
                             <th scope="row" th:text = "${credential.url}">Example Credential URL</th>
                             <td  th:text = "${credential.username}">Example Credential Username</td>
