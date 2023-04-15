@@ -80,8 +80,15 @@ public class FileController {
     }
 
     @GetMapping(value = {"/delete/{fileid}"})
-    public String deleteFile(@PathVariable(name = "fileid") String fileId){
-        fileService.deleteFile(Integer.parseInt(fileId));
+    public String deleteFile(@PathVariable(name = "fileid") String fileId,Model model){
+
+        try{
+            fileService.deleteFile(Integer.parseInt(fileId));
+            model.addAttribute("Success", "Your data was deleted!");
+        }
+        catch (Exception e){
+            model.addAttribute("Error", "Error, data not deleted!");
+        }
         return "redirect:/home";
 
     }

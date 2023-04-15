@@ -30,6 +30,9 @@ public class HomeController {
     public String getHomepage(Authentication authentication, Model model){
         User user = userService.getUser(authentication.getName());
         Integer userId = user.getUserId();
+        if(userId == null){
+            return "redirect:/login";
+        }
         model.addAttribute("files",fileService.getAllFileByUserId(userId));
         model.addAttribute("notes",noteService.getAllNotesByUserId(userId));
         model.addAttribute("credentials",credentialService.getAllCredentialsByUserId(userId));
