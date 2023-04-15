@@ -15,12 +15,13 @@
         <span>Your changes were successfully saved. Click <a th:href="@{'/home'}">here</a> to continue.</span>
     </div>
     <div th:if="${Error}" class="alert alert-danger fill-parent">
-        <h1 class="display-5" th:text="${Error}">Error</h1>
-        <span>Your changes were not saved. Click <a>here</a> to continue.</span>
+        <h1 class="display-5" >Error</h1>
+        <span th:text="${Error}"></span>
+        <span >Your changes were not saved. Click <a>here</a> to continue.</span>
     </div>
     <div th:if="${otherError}" class="alert alert-danger fill-parent">
-        <h1 class="display-5" th:text="${otherError}">Error</h1>
-        <span>Example Error Message</span>
+        <h1 class="display-5">Error</h1>
+        <span th:text="${otherError}">Example Error Message</span>
         <span>Click <a th:href="@{'/home'}">here</a> to continue.</span>
     </div>
 </div>

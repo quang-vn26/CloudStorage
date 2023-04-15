@@ -25,5 +25,13 @@ public class FileService {
         return fileMapper.insertFile(file);
     }
 
+    public File getDetailFile(Integer fileId) {
+        return fileMapper.getDetailFile(fileId);
+    }
+
+    public int deleteFile(Integer fileId){
+        return fileMapper.deleteFile(fileId);
+    }
+
 
 }
