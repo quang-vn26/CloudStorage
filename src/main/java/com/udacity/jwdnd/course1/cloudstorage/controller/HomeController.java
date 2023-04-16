@@ -34,7 +34,7 @@ public class HomeController {
         User user = userService.getUser(authentication.getName());
         Integer userId = user.getUserId();
         if(userId == null){
-            return "redirect:/login";
+            return "t:/login";
         }
         model.addAttribute("files",fileService.getAllFileByUserId(userId));
         model.addAttribute("notes",noteService.getAllNotesByUserId(userId));
