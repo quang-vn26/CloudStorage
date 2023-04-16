@@ -3,11 +3,9 @@ package com.udacity.jwdnd.course1.cloudstorage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -87,7 +85,7 @@ class CloudStorageApplicationTests {
 		// You may have to modify the element "success-msg" and the sign-up 
 		// success message below depening on the rest of your code.
 		*/
-		Assertions.assertTrue(driver.findElement(By.id("success-msg")).getText().contains("You successfully signed up! Please login."));
+		Assertions.assertTrue(driver.findElement(By.id("success-msg")).getText().contains("You successfully signed up! Please continue to the login"));
 	}
 
 
@@ -199,7 +197,6 @@ class CloudStorageApplicationTests {
 
 	}
 
-	// when i run this single => pass, but run file CloudStorageApplicationTests it failed. Please help me to check this problem
 	@Test
 	public void testLoginPage(){
 		// test need account to go home page
@@ -218,6 +215,7 @@ class CloudStorageApplicationTests {
 		Assertions.assertNotEquals("http://localhost:" + this.port + "/home", driver.getCurrentUrl());
 	}
 
+	// when i run this single => pass, but run file CloudStorageApplicationTests it failed. Please help me to check this problem
 	@Test
 	public void testNotePage() throws InterruptedException {
 		// Create a test account
@@ -226,42 +224,72 @@ class CloudStorageApplicationTests {
 		driver.get("http://localhost:" + this.port + "/home");
 
 //		Write a test that creates a note, and verifies it is displayed.
-		NotePage notePage = new NotePage(driver);
-		notePage.addNoteTest("Title","Description");
+		NotePageTest notePageTest = new NotePageTest(driver);
+		notePageTest.addNoteTest("Title","Description");
 		driver.get("http://localhost:" + this.port + "/home");
-		notePage.navigateNote();
+		notePageTest.navigateNote();
 		WebDriverWait webDriverWait = new WebDriverWait(driver, 9);
 		webDriverWait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("btn-new-note"))));
 		Assertions.assertEquals("Title",driver.findElement(By.xpath("//*[@id='userTable']/tbody/tr/th")).getText());
 		Assertions.assertEquals("Description", driver.findElement(By.xpath("//*[@id='userTable']/tbody/tr/td[2]")).getText());
 
 //		Write a test that edits an existing note and verifies that the changes are displayed.
-		notePage.editNoteTest("TitleEdit","DescriptionEdit");
+		notePageTest.editNoteTest("TitleEdit","DescriptionEdit");
 		driver.get("http://localhost:" + this.port + "/home");
-		notePage.navigateNote();
+		notePageTest.navigateNote();
 		webDriverWait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("btn-new-note"))));
 		Assertions.assertEquals("TitleEdit",driver.findElement(By.xpath("//*[@id='userTable']/tbody/tr/th")).getText());
 		Assertions.assertEquals("DescriptionEdit", driver.findElement(By.xpath("//*[@id='userTable']/tbody/tr/td[2]")).getText());
 
 //		Write a test that deletes a note and verifies that the note is no longer displayed.
-		notePage.deleteNoteTest();
+		notePageTest.deleteNoteTest();
 		driver.get("http://localhost:" + this.port + "/home");
-		notePage.navigateNote();
+		notePageTest.navigateNote();
 		Assertions.assertEquals(false,driver.findElement(By.xpath("//*[@id='userTable']/tbody")).isDisplayed());
 
 	}
-
+	// when i run this single => pass, but run file CloudStorageApplicationTests it failed. Please help me to check this problem
 	@Test
-	public void testCredentialPage(){
+	public void testCredentialPage() throws InterruptedException {
 		// Create a test account
 		doMockSignUp("Large File","Test","LFT","123");
 		doLogIn("LFT", "123");
 
 //		Write a test that creates a set of credentials, verifies that they are displayed, and verifies that the displayed password is encrypted.
+		CredentialPageTest credentialPageTest = new CredentialPageTest(driver);
+		credentialPageTest.addCredential("https://github.com/","udacity","passu=Udacity");
+		driver.get("http://localhost:" + this.port + "/home");
+		credentialPageTest.navigateCredentialTab();
+		WebDriverWait webDriverWait = new WebDriverWait(driver, 9);
+		webDriverWait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("btn-new-credential"))));
+		Assertions.assertEquals("https://github.com/",driver.findElement(By.xpath("//*[@id='credentialTable']/tbody/tr/th")).getText());
+		Assertions.assertEquals("udacity", driver.findElement(By.xpath("//*[@id='credentialTable']/tbody/tr/td[2]")).getText());
+		Assertions.assertNotEquals("passu=Udacity", driver.findElement(By.xpath("//*[@id='credentialTable']/tbody/tr/td[3]")).getText());
+
 
 //		Write a test that views an existing set of credentials, verifies that the viewable password is unencrypted, edits the credentials, and verifies that the changes are displayed.
+		driver.get("http://localhost:" + this.port + "/home");
+		credentialPageTest.navigateCredentialTab();
+		credentialPageTest.viewCredential("https://github.com/","udacity","passu=Udacity");
+		webDriverWait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("id-btn-credential"))));
+		Assertions.assertEquals("https://github.com/",driver.findElement(By.id("credential-url")).getAttribute("value"));
+		Assertions.assertEquals("udacity", driver.findElement(By.id("credential-username")).getAttribute("value"));
+		Assertions.assertEquals("passu=Udacity", driver.findElement(By.id("credential-password")).getAttribute("value"));
+
+		credentialPageTest.editCredential("https://github.com2/","udacity2","passuUdacity2");
+		driver.get("http://localhost:" + this.port + "/home");
+		credentialPageTest.navigateCredentialTab();
+		webDriverWait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id("btn-new-credential"))));
+		Assertions.assertEquals("https://github.com2/",driver.findElement(By.xpath("//*[@id='credentialTable']/tbody/tr/th")).getText());
+		Assertions.assertEquals("udacity2", driver.findElement(By.xpath("//*[@id='credentialTable']/tbody/tr/td[2]")).getText());
+		Assertions.assertNotEquals("passuUdacity2", driver.findElement(By.xpath("//*[@id='credentialTable']/tbody/tr/td[3]")).getText());
 
 //		Write a test that deletes an existing set of credentials and verifies that the credentials are no longer displayed.
+		credentialPageTest.deleteCredential();
+		driver.get("http://localhost:" + this.port + "/home");
+		credentialPageTest.navigateCredentialTab();
+		Assertions.assertNotEquals(true, driver.findElement(By.xpath("//*[@id='credentialTable']/tbody")).isDisplayed());
+
 	}
 
 

@@ -1,6 +1,5 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,7 +7,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class NotePage {
+public class NotePageTest {
 
     @FindBy(id = "nav-notes-tab")
     private WebElement noteTab;
@@ -29,15 +28,15 @@ public class NotePage {
     @FindBy(id = "note-description")
     private WebElement noteDescription;
 
-    private WebDriver webDriver;
+    private WebDriver driver;
 
-    public NotePage(WebDriver webDriver) {
-        this.webDriver = webDriver;
-        PageFactory.initElements(webDriver, this);
+    public NotePageTest(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
     }
     public void addNoteTest(String title, String description) throws InterruptedException {
         navigateNote();
-        WebDriverWait webDriverWait = new WebDriverWait(webDriver, 9);
+        WebDriverWait webDriverWait = new WebDriverWait(driver, 9);
         webDriverWait.until(ExpectedConditions.visibilityOf(this.addNoteBtn));
         this.addNoteBtn.click();
         webDriverWait.until(ExpectedConditions.visibilityOf(this.noteTitle));
@@ -47,7 +46,7 @@ public class NotePage {
     }
     public void editNoteTest(String title, String description){
         navigateNote();
-        WebDriverWait webDriverWait = new WebDriverWait(webDriver, 9);
+        WebDriverWait webDriverWait = new WebDriverWait(driver, 9);
         webDriverWait.until(ExpectedConditions.visibilityOf(this.editNoteBtn));
         editNoteBtn.click();
         webDriverWait.until(ExpectedConditions.visibilityOf(this.noteTitle));
@@ -60,7 +59,7 @@ public class NotePage {
     }
     public void deleteNoteTest(){
         navigateNote();
-        WebDriverWait webDriverWait = new WebDriverWait(webDriver, 9);
+        WebDriverWait webDriverWait = new WebDriverWait(driver, 9);
         webDriverWait.until(ExpectedConditions.visibilityOf(this.deleteNoteBtn));
         deleteNoteBtn.click();
     }
